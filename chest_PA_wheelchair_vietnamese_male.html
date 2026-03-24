@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>胸部立位正面 車椅子（X-quang ngực）Hướng dẫn âm thanh tiếng Việt</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
+.header{padding:18px 16px 10px;}
+.frame-title{border:2px solid #38bdf8;padding:14px 16px;border-radius:14px;background:#f8fcff;text-align:center;}
+.frame-title h1{margin:0;font-size:20px;}
+.frame-title p{margin:6px 0 0;font-size:14px;color:#475569;}
+.note{font-size:12px;color:#475569;margin:12px 16px;}
+.main{margin:0 16px 24px;padding:16px;background:#fff;border-radius:18px;box-shadow:0 8px 18px rgba(15,23,42,.08);}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;}
+button:active{transform:scale(.98);}
+.label{margin-top:14px;font-size:13px;color:#475569;}
+.jp{font-size:18px;font-weight:600;margin-top:6px;}
+.en{font-size:16px;margin-top:4px;line-height:1.7;}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+audio{width:100%;margin-top:10px;}
+.status{margin-top:8px;font-size:13px;color:#475569;}
+.hint{margin-top:10px;font-size:12px;color:#64748b;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="frame-title">
+    <h1>胸部立位正面 車椅子（X-quang ngực）</h1>
+    <p>ベトナム語音声ガイド</p>
+  </div>
+</div>
+
+<p class="note">※ iPhone / iPad / Android で再生できます。最初は「再生」を押してください。</p>
+
+<div class="main">
+  <div class="row">
+    <select id="sel"></select>
+    <button id="prev">← 前</button>
+    <button id="next">次 →</button>
+  </div>
+
+  <div class="label">日本語（内容）</div>
+  <div class="jp" id="jp"></div>
+
+  <div class="label">ベトナム語（kịch bản）</div>
+  <div class="en" id="en"></div>
+
+  <div class="controls">
+    <button id="play">▶︎ 再生</button>
+    <button id="pause">⏸ 一時停止</button>
+    <button id="replay">↻ もう一度</button>
+  </div>
+
+  <div class="status" id="status">待機中 / Sẵn sàng phát</div>
+  <audio id="player" controls></audio>
+
+  <div class="hint">
+    再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
+  </div>
+</div>
+
+<script>
+const STEPS = [
+ {preview:"すみません、少しよろしいですか？", jp:"すみません、少しよろしいですか？", en:"Xin lỗi, tôi làm phiền anh một chút được không?"},
+ {preview:"こちらをご覧ください。これはあな…", jp:"こちらをご覧ください。これはあなたのお名前と生年月日で合っていますか？", en:"Anh vui lòng xem ở đây. Tên và ngày sinh này có đúng của anh không?"},
+ {preview:"お名前と生年月日を教えていただけ…", jp:"お名前と生年月日を教えていただけますか？", en:"Anh cho tôi xin họ tên và ngày sinh được không?"},
+ {preview:"簡単な日本語は理解できますか？", jp:"簡単な日本語は理解できますか？", en:"Anh có hiểu tiếng Nhật đơn giản không?"},
+ {preview:"ベトナム語の音声ガイドを使用しま…", jp:"（通訳不在時）ベトナム語の音声ガイドで検査を説明します。音声の指示に従ってください。", en:"Chúng tôi sẽ hướng dẫn bằng tiếng Việt. Xin làm theo hướng dẫn âm thanh."},
+ {preview:"ベトナム語通訳を呼びますのでお待…", jp:"ベトナム語を話せる通訳を呼びますので、しばらくお待ちください。", en:"Chúng tôi sẽ gọi phiên dịch viên nói tiếng Việt. Xin chờ một chút."},
+ {preview:"どうぞお入りください。", jp:"どうぞお入りください。", en:"Xin mời vào."},
+ {preview:"これから胸部レントゲンを撮影しま…", jp:"これから胸部レントゲンを撮影します。", en:"Bây giờ chúng tôi sẽ chụp X-quang ngực cho anh."},
+ {preview:"金属やプラスチック、湿布などを外…", jp:"身につけている金属やプラスチック製品、湿布などを外してください。", en:"Xin tháo các vật bằng kim loại, đồ nhựa và miếng dán thuốc đang mang trên người."},
+ {preview:"更衣室は17番受付の隣にあります…", jp:"（着替えが必要な場合）更衣室は17番受付の隣にあります。検査着は更衣室にありますので、更衣室で着替えてください。着替え終わったらここに戻ってきてください。", en:"Phòng thay đồ ở bên cạnh quầy tiếp nhận số 17. Quần áo khám ở trong phòng thay đồ. Xin thay đồ ở đó. Thay xong, xin quay lại đây."},
+ {preview:"車椅子から立つことはできますか…", jp:"車椅子から立つことはできますか？", en:"Anh có thể đứng lên từ xe lăn được không?"},
+ {preview:"ゆっくり立ってください…", jp:"ゆっくり立ってください。", en:"Xin đứng lên từ từ."},
+ {preview:"あごをここにのせてください。", jp:"あごをここにのせてください。", en:"Xin đặt cằm vào đây."},
+ {preview:"あごは乗せなくて大丈夫です…", jp:"あごはここに乗せなくて大丈夫です。上を向くだけで大丈夫です。", en:"Anh không cần đặt cằm vào đây. Chỉ cần ngẩng mặt lên là được."},
+ {preview:"両手で機械を抱えるようにしてくだ…", jp:"両手で機械を抱えるようにしてください。", en:"Xin ôm thiết bị này bằng cả hai tay."},
+ {preview:"両手でこの取手を握ってください…", jp:"両手でこの取手を握ってください。", en:"Xin nắm tay cầm này bằng cả hai tay."},
+ {preview:"動かないでください。", jp:"動かないでください。", en:"Xin đừng cử động."},
+ {preview:"大きく息を吸って、止めてください…", jp:"大きく息を吸って、止めてください。", en:"Xin hít thật sâu và nín thở."},
+ {preview:"楽にしてください。", jp:"楽にしてください。", en:"Xin thư giãn."},
+ {preview:"検査は終わりました。", jp:"検査は終わりました。", en:"Chụp xong rồi."},
+ {preview:"ゆっくり座ってください…", jp:"ゆっくり車椅子に座ってください。", en:"Xin ngồi lại xe lăn từ từ."},
+ {preview:"次は診察がありますので、10番へ…", jp:"次は診察がありますので、10番へ行ってこのファイルを提出してください。", en:"Tiếp theo anh sẽ khám bác sĩ. Xin đến số 10 và nộp hồ sơ này cho nhân viên."},
+ {preview:"19番または20番の前でお待ちくださ…", jp:"19番または20番の検査室の前でお待ちください。", en:"Xin chờ trước phòng khám số 19 hoặc 20."},
+ {preview:"23番の前でお待ちください。", jp:"23番の検査室の前でお待ちください。", en:"Xin chờ trước phòng khám số 23."},
+ {preview:"16番の前でお待ちください。", jp:"16番の前でお待ちください。", en:"Xin chờ trước phòng khám số 16."},
+ {preview:"もう着替えてもいいですよ。", jp:"（着替えていい場合）もう着替えてもいいですよ。", en:"Bây giờ anh có thể thay lại quần áo được rồi."},
+ {preview:"まだ他の検査が残っています。", jp:"（他検査がある場合）まだ他の検査が残っています。", en:"Anh vẫn còn xét nghiệm khác."},
+ {preview:"まだ着替えないでください。", jp:"（他検査がある場合）まだ着替えないでください。", en:"Xin đừng thay quần áo vội."}
+];
+
+const sel=document.getElementById('sel'),
+jp=document.getElementById('jp'),
+en=document.getElementById('en'),
+player=document.getElementById('player'),
+status=document.getElementById('status');
+
+STEPS.forEach((s,i)=>{
+ const o=document.createElement('option');
+ o.value=i;
+ o.textContent=`${String(i+1).padStart(2,'0')}｜${s.jp}`;
+ sel.appendChild(o);
+});
+
+let idx=0;
+function load(i){
+ idx=Math.max(0,Math.min(STEPS.length-1,i));
+ sel.value=idx;
+ jp.textContent=STEPS[idx].jp;
+ en.textContent=STEPS[idx].en;
+ player.src=`audio/step_${String(idx+1).padStart(2,'0')}.m4a`;
+ status.textContent="待機中 / Sẵn sàng phát";
+}
+sel.onchange=()=>load(parseInt(sel.value));
+document.getElementById('prev').onclick=()=>load(idx-1);
+document.getElementById('next').onclick=()=>load(idx+1);
+document.getElementById('play').onclick=()=>player.play();
+document.getElementById('pause').onclick=()=>player.pause();
+document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();}
+player.onplay=()=>status.textContent="再生中 / Đang phát";
+player.onpause=()=>status.textContent="一時停止 / Đã tạm dừng";
+player.onended=()=>status.textContent="待機中 / Sẵn sàng phát";
+load(0);
+</script>
+</body>
+</html>
